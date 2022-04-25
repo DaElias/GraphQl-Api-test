@@ -1,8 +1,7 @@
 const express = require("express");
 const schema = require("./SchemaGqhl");
 const { graphqlHTTP } = require("express-graphql");
-const rootValue = require("../graphql/rootValue")
-
+const resolvers = require("../lib/resolvers");
 class Server {
   constructor() {
     this.app = express();
@@ -12,22 +11,25 @@ class Server {
     };
     this.middleware();
   }
+
   middleware() {
     this.app.use(
       this.path.graphqlPATH,
       graphqlHTTP({
         schema,
-        rootValue,
+        rootValue: resolvers,
         graphiql: true,
       })
     );
   }
+
   listen() {
     this.app.listen(this.port, () => {
-      console.log(`Servideor Corriendo en http://localhost:${this.port}${this.path.graphqlPATH}`);
+      console.log(
+        `Servideor Corriendo en http://localhost:${this.port}${this.path.graphqlPATH}`
+      );
     });
   }
 }
-
 
 module.exports = Server;
