@@ -1,15 +1,53 @@
 const { buildSchema } = require("graphql");
 module.exports = buildSchema(`
 type Course {
-  _id: ID
-  title: String
+  _id: ID!
+  title: String!
+  description: String!
   teacher: String
   topic: String
-  description: String
+  people:[StudentFind]
+}
+type Query {
+    getCouses(skip: Int,limit: Int):[Course]
+    getCouse(id: ID!): Course
+    getStudents(skip: Int,limit: Int):[Student]
+    getStudent(id: ID!): Student
+}
+type StudentFind {
+  _id:  ID!
+  name: String
+}
+type Student {
+  _id: ID!
+  name: String!
+  email: String!
 }
 
-type Query{
-  "retorna todos los cursos"
-    getCouses:[Course]
+input courseInput{
+  title: String!
+  description: String!
+  teacher: String
+  topic: String
+}
+input studentInput{
+  _id: ID!
+  name: String!
+  email: String!
+}
+input courseEditInput{
+  _id: ID!
+  title: String
+  description: String
+  teacher: String
+  topic: String
+}
+type Mutation {
+  "Create a course"
+  createCourse(input: courseInput!): Course
+  createStudent(input: studentInput!): Student
+  "Edit Course"
+  editCourse(input: courseEditInput!):Course
+  addStudentToCourse(courseID: ID!,studentID: ID!):Course
 }
 `);

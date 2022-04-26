@@ -1,18 +1,24 @@
+require("dotenv").config();
 const express = require("express");
+const { dbConection } = require("../database/dbConfig");
 const schema = require("./SchemaGqhl");
 const { graphqlHTTP } = require("express-graphql");
 const resolvers = require("../lib/resolvers");
+// const { loggingMiddleware } = require("../middleware/graphqlM");
 class Server {
   constructor() {
     this.app = express();
-    this.port = 3010;
+    this.port = process.env.PORT || 3080;
     this.path = {
       graphqlPATH: "/api",
     };
+
     this.middleware();
+    this.connectdb();
   }
 
   middleware() {
+    // this.app.use(loggingMiddleware);
     this.app.use(
       this.path.graphqlPATH,
       graphqlHTTP({
@@ -22,11 +28,14 @@ class Server {
       })
     );
   }
+  connectdb() {
+    dbConection();
+  }
 
   listen() {
     this.app.listen(this.port, () => {
       console.log(
-        `Servideor Corriendo en http://localhost:${this.port}${this.path.graphqlPATH}`
+        `Server running in http://localhost:${this.port}${this.path.graphqlPATH}`
       );
     });
   }
