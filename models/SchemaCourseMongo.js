@@ -1,5 +1,4 @@
 const { Schema, model } = require("mongoose");
-
 const CourseSchema = Schema({
   title: {
     type: String,
@@ -9,10 +8,7 @@ const CourseSchema = Schema({
   description: { type: String, require: [true, "The description is required"] },
   teacher: { type: String },
   topic: { type: String },
-  people: {
-    type: Array,
-    default: [],
-  },
+  people: { type: Array },
 });
 
 CourseSchema.methods.toJSON = function () {

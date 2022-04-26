@@ -15,8 +15,9 @@ type Query {
     getStudent(id: ID!): Student
 }
 type StudentFind {
-  _id:  ID!
+  _id:  String!
   name: String
+  email: String
 }
 type Student {
   _id: ID!
@@ -49,5 +50,6 @@ type Mutation {
   "Edit Course"
   editCourse(input: courseEditInput!):Course
   addStudentToCourse(courseID: ID!,studentID: ID!):Course
+  deleteStudentToCourse(courseID: ID!,studentID: ID!):Course
 }
 `);

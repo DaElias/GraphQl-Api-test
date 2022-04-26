@@ -57,9 +57,46 @@ const addStudentToCourseDB = async (root, args) => {
   // TODO validar ID validos que existan
   //* code
   const studen = await Student.findById(studentID);
-  const uppdate = await Course.findById(courseID);
-  uppdate.people.push({ _id: studen._id, name: studen.name });
-  await uppdate.save();
+  // const uppdate = await Course.findById(courseID);
+  // const transform = studen._id.toString().replace(/ObjectId\("(.*)"\)/, "$1");
+  // uppdate.people.push({
+  //   _id: transform,
+  //   name: studen.name,
+  // });
+  // await uppdate.save();
+  const uppdate = await Course.findOneAndUpdate(
+    {
+      _id: courseID,
+    },
+    {
+      $push: {
+        people: { _id: studentID, name: studen.name, email: studen.email },
+      },
+    }
+  );
+
+  return uppdate;
+};
+
+const deleteStudentToCourseDB = async (root, args) => {
+  const { courseID, studentID } = root;
+  // const studentE = await Student.findById(studentID);
+  // const uppdate = await Course.findById(courseID);
+  // uppdate.people.filter((student) => {
+  //   console.log(student.id.toString().replace(/ObjectId\("(.*)"\)/, "$1"));
+  //   console.log(studentID);
+  //   return student.id !== studentID;
+  // });
+  const uppdate = await Course.findOneAndUpdate(
+    {
+      _id: courseID,
+    },
+    {
+      $pull: {
+        people: { _id: studentID },
+      },
+    }
+  );
   return uppdate;
 };
 
@@ -69,4 +106,5 @@ module.exports = {
   getCoursesDB,
   createCourseDB,
   editCourseDB,
+  deleteStudentToCourseDB,
 };

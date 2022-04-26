@@ -4,7 +4,6 @@ const { dbConection } = require("../database/dbConfig");
 const schema = require("./SchemaGqhl");
 const { graphqlHTTP } = require("express-graphql");
 const resolvers = require("../lib/resolvers");
-// const { loggingMiddleware } = require("../middleware/graphqlM");
 class Server {
   constructor() {
     this.app = express();
@@ -16,9 +15,7 @@ class Server {
     this.middleware();
     this.connectdb();
   }
-
   middleware() {
-    // this.app.use(loggingMiddleware);
     this.app.use(
       this.path.graphqlPATH,
       graphqlHTTP({
